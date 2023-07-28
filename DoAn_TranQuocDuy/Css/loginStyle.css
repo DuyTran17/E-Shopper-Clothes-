@@ -1,0 +1,26 @@
+﻿.login-box {
+    width: 360px;
+    margin: 7% auto;
+}
+.login-box-body {
+    background: #e9ecef;
+    padding: 20px;
+    border-top: 0;
+    color: #666;
+}
+.login-logo {
+    font-size: 35px;
+    text-align: center;
+    margin-bottom: 25px;
+    font-weight: 300;
+}
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+.listTd {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}

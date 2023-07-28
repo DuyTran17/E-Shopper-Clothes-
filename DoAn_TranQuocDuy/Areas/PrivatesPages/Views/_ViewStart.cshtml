@@ -1,0 +1,11 @@
+﻿@using DoAn_TranQuocDuy.Models
+@{    
+    TaiKhoan x = (TaiKhoan)Session["Login"];
+    if (x == null)
+    {
+        Response.Redirect("~/Login/Index");
+    }
+     
+    
+    Layout = "~/Areas/PrivatesPages/Views/Shared/_Layout.cshtml";
+}

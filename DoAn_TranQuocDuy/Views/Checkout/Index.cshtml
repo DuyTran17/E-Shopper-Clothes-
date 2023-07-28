@@ -1,0 +1,203 @@
+﻿@using DoAn_TranQuocDuy.Models
+@model DoAn_TranQuocDuy.Models.KhachHang
+
+@{
+    ViewBag.Title = "Index";
+    ShopCart y = ViewData["spDaChon"] as ShopCart;
+}
+<!-- Navbar Start -->
+    <div class="container-fluid">
+        <div class="row border-top px-xl-5">
+            <div class="col-lg-3 d-none d-lg-block">
+                <a class="btn shadow-none d-flex align-items-center justify-content-between bg-primary text-white w-100" data-toggle="collapse" href="#navbar-vertical" style="height: 65px; margin-top: -1px; padding: 0 30px;">
+                    <h6 class="m-0">Categories</h6>
+                    <i class="fa fa-angle-down text-dark"></i>
+                </a>
+                <nav class="collapse show navbar navbar-vertical navbar-light align-items-start p-0 border border-top-0 border-bottom-0" id="navbar-vertical">
+                    <div class="navbar-nav w-100 overflow-hidden" style="height: 410px">
+                        <div class="nav-item dropdown">
+
+                            <a href="#" class="nav-link" data-toggle="dropdown">Dresses <i class="fa fa-angle-down float-right mt-1"></i></a>
+                            <div class="dropdown-menu position-absolute bg-secondary border-0 rounded-0 w-100 m-0">
+                                @{
+                                    foreach (LoaiSP i in Common.getCategories())
+                                    {
+                                        if (i.maLoai <= 3)
+                                        {
+                                            <a href="@Url.Action("Index","Shop", new {MaLoai = i.maLoai })" class="dropdown-item">@i.tenLoai</a>
+                                        }
+
+                                    }
+                                }
+                            </div>
+                        </div>
+                        @{
+                            foreach (LoaiSP i in Common.getCategories())
+                            {
+                                if (i.maLoai > 3)
+                                {
+                                    <a href="" class="nav-item nav-link">@i.tenLoai</a>
+                                }
+
+                            }
+                        }
+                    </div>
+                </nav>
+            </div>
+            <div class="col-lg-9">
+                <nav class="navbar navbar-expand-lg bg-light navbar-light py-3 py-lg-0 px-0">
+                    <a href="" class="text-decoration-none d-block d-lg-none">
+                        <h1 class="m-0 display-5 font-weight-semi-bold"><span class="text-primary font-weight-bold border px-3 mr-1">E</span>Shopper</h1>
+                    </a>
+                    <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
+                        <div class="navbar-nav mr-auto py-0">
+                            <a href="~/Home/Index" class="nav-item nav-link">Home</a>
+                            <div class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle active" data-toggle="dropdown">Pages</a>
+                                <div class="dropdown-menu rounded-0 m-0">
+                                    <a href="~/Cart/Index" class="dropdown-item">Shopping Cart</a>
+                                    <a href="~/Checkout/Index" class="dropdown-item">Checkout</a>
+                                </div>
+                            </div>
+                            <a href="~/Contact/Index" class="nav-item nav-link">Contact</a>
+                        </div>
+                        <div class="navbar-nav ml-auto py-0">
+                            <a href="" class="nav-item nav-link">Login</a>
+                            <a href="" class="nav-item nav-link">Register</a>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </div>
+    <!-- Navbar End -->
+
+
+    <!-- Page Header Start -->
+    <div class="container-fluid bg-secondary mb-5">
+        <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 300px">
+            <h1 class="font-weight-semi-bold text-uppercase mb-3">Checkout</h1>
+            <div class="d-inline-flex">
+                <p class="m-0"><a href="">Home</a></p>
+                <p class="m-0 px-2">-</p>
+                <p class="m-0">Checkout</p>
+            </div>
+        </div>
+    </div>
+    <!-- Page Header End -->
+
+
+    <!-- Checkout Start -->
+    <div class="container-fluid pt-5">
+        <div class="row px-xl-5">
+            <div class="col-lg-8">
+                <div class="mb-4">
+                    <h4 class="font-weight-semi-bold mb-4">Billing Address</h4>
+                    @using(Html.BeginForm("SaveToDatabase","Checkout",FormMethod.Post))
+             {
+                <div class="row">
+                    <div class="col-md-6 form-group">
+                        <label>First Name</label>
+                        @Html.TextBoxFor(x => x.tenKH , new {@class="form-control", @type="text", @placeholder="Name" })
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <label>Phone Number</label>
+                        @Html.TextBoxFor(x => x.soDT, new { @class = "form-control", @placeholder = "Phone Number" })
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <label>Email</label>
+                        @Html.TextBoxFor(x => x.email, new { @class = "form-control",@type="email", @placeholder = "Email" })
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <label>Address</label>
+                        @Html.TextBoxFor(x => x.diaChi, new { @class = "form-control", @placeholder = "Address" })
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <span> Male</span>
+                        @Html.RadioButtonFor(x => x.gioiTinh, true, new { @checked = "checked" })
+                        <span> Female</span>
+                        @Html.RadioButtonFor(x => x.gioiTinh, false)
+                        <span class="glyphicon glyphicon-user form-control-feedback"></span>
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <label>BirthDay</label>
+                        @Html.TextBoxFor(x => x.ngaySinh, new { @class = "form-control", @type="date" })
+                    </div>                   
+                    <div class="card-footer border-secondary bg-transparent">
+                        <button class="btn btn-lg btn-block btn-primary font-weight-bold my-3 py-3">Buy</button>
+                    </div>
+                </div>
+                }
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="card border-secondary mb-5">
+                    <div class="card-header bg-secondary border-0">
+                        <h4 class="font-weight-semi-bold m-0">Order Total</h4>
+                    </div>
+
+                    <div class="card-body">
+                        <h5 class="font-weight-medium mb-3">Products</h5>
+                        @{
+                            foreach (CtDonHang i in y.spDaChon.Values)
+                            {
+                                                <div class="d-flex justify-content-between">
+                                                    <p>@Common.getNameProductByID(i.maSP)</p>
+                                                    <p>@i.soLuong</p>
+                                                    <p>@i.giaBan</p>
+                                                </div>
+                            }
+                        }                       
+                        <hr class="mt-0">
+                        <div class="d-flex justify-content-between mb-3 pt-1">
+                            <h6 class="font-weight-medium">Subtotal</h6>
+                            <h6 class="font-weight-medium">@y.tongGioHang()</h6>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <h6 class="font-weight-medium">Shipping</h6>
+                            <h6 class="font-weight-medium">20.000</h6>
+                        </div>
+                    </div>
+                        <div class="card-footer border-secondary bg-transparent">
+                            <div class="d-flex justify-content-between mt-2">
+                                <h5 class="font-weight-bold">Total</h5>
+                                <h5 class="font-weight-bold">@(y.tongGioHang() +20000)</h5>
+                            </div>
+                        </div>
+                </div>
+                <div class="card border-secondary mb-5">
+                    <div class="card-header bg-secondary border-0">
+                        <h4 class="font-weight-semi-bold m-0">Payment</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group">
+                            <div class="custom-control custom-radio">
+                                <input type="radio" class="custom-control-input" name="payment" id="paypal">
+                                <label class="custom-control-label" for="paypal">Paypal</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="custom-control custom-radio">
+                                <input type="radio" class="custom-control-input" name="payment" id="directcheck">
+                                <label class="custom-control-label" for="directcheck">Direct Check</label>
+                            </div>
+                        </div>
+                        <div class="">
+                            <div class="custom-control custom-radio">
+                                <input type="radio" class="custom-control-input" name="payment" id="banktransfer">
+                                <label class="custom-control-label" for="banktransfer">Bank Transfer</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer border-secondary bg-transparent">
+                        <button class="btn btn-lg btn-block btn-primary font-weight-bold my-3 py-3">Place Order</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Checkout End -->
+

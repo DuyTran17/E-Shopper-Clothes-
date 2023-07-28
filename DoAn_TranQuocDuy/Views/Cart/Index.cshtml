@@ -1,0 +1,175 @@
+﻿@using DoAn_TranQuocDuy.Models
+
+@{
+    ViewBag.Title = "Index";
+    ShopCart x = ViewData["spDaChon"] as ShopCart;
+}
+
+<!-- Navbar Start -->
+<div class="container-fluid">
+    <div class="row border-top px-xl-5">
+        <div class="col-lg-3 d-none d-lg-block">
+            <a class="btn shadow-none d-flex align-items-center justify-content-between bg-primary text-white w-100" data-toggle="collapse" href="#navbar-vertical" style="height: 65px; margin-top: -1px; padding: 0 30px;">
+                <h6 class="m-0">Categories</h6>
+                <i class="fa fa-angle-down text-dark"></i>
+            </a>
+            <nav class="collapse show navbar navbar-vertical navbar-light align-items-start p-0 border border-top-0 border-bottom-0" id="navbar-vertical">
+                <div class="navbar-nav w-100 overflow-hidden" style="height: 410px">
+                    <div class="nav-item dropdown">
+
+                        <a href="#" class="nav-link" data-toggle="dropdown">Dresses <i class="fa fa-angle-down float-right mt-1"></i></a>
+                        <div class="dropdown-menu position-absolute bg-secondary border-0 rounded-0 w-100 m-0">
+                            @{
+                                foreach (LoaiSP i in Common.getCategories())
+                                {
+                                    if (i.maLoai <= 3)
+                                    {
+                                        <a href="@Url.Action("Index","Shop", new {MaLoai = i.maLoai })" class="dropdown-item">@i.tenLoai</a>
+                                    }
+
+                                }
+                            }
+                        </div>
+                    </div>
+                    @{
+                        foreach (LoaiSP i in Common.getCategories())
+                        {
+                            if (i.maLoai > 3)
+                            {
+                                <a href="" class="nav-item nav-link">@i.tenLoai</a>
+                            }
+
+                        }
+                    }
+                </div>
+            </nav>
+        </div>
+        <div class="col-lg-9">
+            <nav class="navbar navbar-expand-lg bg-light navbar-light py-3 py-lg-0 px-0">
+                <a href="" class="text-decoration-none d-block d-lg-none">
+                    <h1 class="m-0 display-5 font-weight-semi-bold"><span class="text-primary font-weight-bold border px-3 mr-1">E</span>Shopper</h1>
+                </a>
+                <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
+                    <div class="navbar-nav mr-auto py-0">
+                        <a href="~/Home/Index" class="nav-item nav-link">Home</a>
+                        <div class="nav-item dropdown">
+                            <a href="#" class="nav-link dropdown-toggle active" data-toggle="dropdown">Pages</a>
+                            <div class="dropdown-menu rounded-0 m-0">
+                                <a href="~/Cart/Index" class="dropdown-item">Shopping Cart</a>
+                                <a href="~/Checkout/Index" class="dropdown-item">Checkout</a>
+                            </div>
+                        </div>
+                        <a href="~/Contact/Index" class="nav-item nav-link">Contact</a>
+                    </div>
+                    <div class="navbar-nav ml-auto py-0">
+                        <a href="" class="nav-item nav-link">Login</a>
+                        <a href="" class="nav-item nav-link">Register</a>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </div>
+</div>
+<!-- Navbar End -->
+<!-- Page Header Start -->
+<div class="container-fluid bg-secondary mb-5">
+    <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 300px">
+        <h1 class="font-weight-semi-bold text-uppercase mb-3">Shopping Cart</h1>
+        <div class="d-inline-flex">
+            <p class="m-0"><a href="">Home</a></p>
+            <p class="m-0 px-2">-</p>
+            <p class="m-0">Shopping Cart</p>
+        </div>
+    </div>
+</div>
+<!-- Page Header End -->
+<!-- Cart Start -->
+<div class="container-fluid pt-5">
+    <div class="row px-xl-5">
+        <div class="col-lg-8 table-responsive mb-5">
+            <table class="table table-bordered text-center mb-0">
+                <thead class="bg-secondary text-dark">
+                    <tr>
+                        <th>Products</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                        <th>Total</th>
+                        <th>Remove</th>
+                    </tr>
+                </thead>
+                <tbody class="align-middle">
+                    @{ 
+                        foreach(CtDonHang i in x.spDaChon.Values)
+                        {
+                                        <tr>
+                                            <td class="align-middle"><img src="@Common.getImgProductByID(i.maSP)" alt="" style="width: 50px;"> @Common.getNameProductByID(i.maSP)</td>
+                                            <td class="align-middle">@i.giaBan</td>
+                                            <td class="align-middle ">
+                                                <div class="input-group mx-auto" style="width: 100px">
+                                                    @using (Html.BeginForm("Decrease", "Cart", FormMethod.Post))
+                                                    {
+                                                        <input type="hidden" name="maSP" value="@i.maSP" />
+                                                        <button class="btn btn-sm btn-minus"><i class="fa fa-minus"></i></button>
+                                                    }
+                                                    <input type="text" class="form-control form-control-sm bg-secondary text-center" value="@i.soLuong">
+                                                    @using (Html.BeginForm("Add", "Cart", FormMethod.Post))
+                                                    {
+                                                        <input type="hidden" name="maSP" value="@i.maSP" />
+                                                        <button class="btn btn-sm btn-plus"><i class="fa fa-plus"></i></button>
+                                                    }
+                                                </div>
+                                            </td>
+                                            <td class="align-middle">@x.giaTienMotSP(i)</td>
+                                            <td class="align-middle">
+                                                @using (Html.BeginForm("Delete", "Cart", FormMethod.Post))
+                                                {
+                                                    <input type="hidden" name="maSP" value="@i.maSP" />
+                                                    <button class="btn btn-sm btn-primary"><i class="fa fa-times"></i></button>
+                                                }
+                                            </td>
+                                        </tr>
+                        }
+                    }
+                    
+                   
+                </tbody>
+            </table>
+        </div>
+        <div class="col-lg-4">
+            <form class="mb-5" action="">
+                <div class="input-group">
+                    <input type="text" class="form-control p-4" placeholder="Coupon Code">
+                    <div class="input-group-append">
+                        <button class="btn btn-primary">Apply Coupon</button>
+                    </div>
+                </div>
+            </form>
+            <div class="card border-secondary mb-5">
+                <div class="card-header bg-secondary border-0">
+                    <h4 class="font-weight-semi-bold m-0">Cart Summary</h4>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex justify-content-between mb-3 pt-1">
+                        <h6 class="font-weight-medium">Subtotal</h6>
+                        <h6 class="font-weight-medium">@x.tongGioHang()</h6>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <h6 class="font-weight-medium">Shipping</h6>
+                        <h6 class="font-weight-medium">20.000</h6>
+                    </div>
+                </div>
+                <div class="card-footer border-secondary bg-transparent">
+                    <div class="d-flex justify-content-between mt-2">
+                        <h5 class="font-weight-bold">Total</h5>
+                        <h5 class="font-weight-bold">@(x.tongGioHang() + 20000)     </h5>
+                    </div>
+                    <a href="~/CheckOut/Index" class="btn btn-block btn-primary my-3 py-3">Proceed To Checkout</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Cart End -->
